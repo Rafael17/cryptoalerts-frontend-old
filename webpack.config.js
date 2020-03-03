@@ -19,8 +19,8 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        test: /\.(css$|scss)/,
+        use: ['style-loader', 'css-loader','sass-loader']
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
@@ -34,8 +34,9 @@ module.exports = {
   devServer: {
     port: 3000,
     open: true,
+    historyApiFallback: true,
     proxy: {
-      '/api': 'http://localhost:8080'
+      '/api': 'http://localhost:80'
     }
   },
   plugins: [

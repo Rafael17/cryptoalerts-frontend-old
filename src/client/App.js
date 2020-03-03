@@ -1,23 +1,27 @@
 import React, { Component } from 'react';
-import './app.css';
-import ReactImage from './react.png';
+import './app.scss';
+import Login from './Login';
+import { Route, Switch } from 'react-router-dom';
+import PrivateRoute from './components/PrivateRoute';
+import PriceAlerts from './PriceAlerts';
 
-export default class App extends Component {
-  state = { username: null };
+class App extends Component {
 
-  componentDidMount() {
-    fetch('/api/getUsername')
-      .then(res => res.json())
-      .then(user => this.setState({ username: user.username }));
-  }
+    componentDidMount() {
 
-  render() {
-    const { username } = this.state;
-    return (
-      <div>
-        {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
-        <img src={ReactImage} alt="react" />
-      </div>
-    );
-  }
+    }
+
+    render() {
+        
+        return (
+            <main>
+                <Switch>
+                    <Route exact path='/' component={Login} />
+                    <PrivateRoute path='/price-alerts' component={PriceAlerts} />
+                </Switch>
+            </main>
+        );
+    }
 }
+
+export default App;
