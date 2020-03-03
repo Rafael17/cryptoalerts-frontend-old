@@ -11,9 +11,7 @@ h2 {
 	text-align: center;
 	min-height: 100vh;
 	position: relative;
-	-webkit-perspective: 1000;
-    -moz-perspective: 1000;
-    perspective: 1000;
+    perspective: 1000px;
 
 	.alarm-svg, .alarm-svg svg {
 		width:100px;
@@ -26,12 +24,12 @@ h2 {
 	width: 350px;
 	padding: 10px 40px;
 	border-radius: 8px;
-	overflow: hidden;
 	position: relative;
 	box-shadow: 0px 0px 37px -8px rgba(0,0,0,0.75);
 	transition: all 1s ease;
 	backface-visibility: hidden; 
-	height: 550px;
+	height: 560px;
+	background-color: #f8f9fa;
 
 	animation-duration: .7s;
     animation-timing-function: ease-in-out;
@@ -53,6 +51,12 @@ h2 {
 		transform:rotateY(0deg);
 
 	}
+	&.back .header {
+		margin-top: 40px;
+		h5 {
+			font-size: 16px;
+		}
+	}
 
 }
 
@@ -67,17 +71,6 @@ h2 {
 		position:relative;
 		flex: 0 0 50%;
 	}
-}
-
-.login-wrapper::before {
-	content: '';
-	position:absolute;
-	top:0;
-	bottom:0;
-	left:0;
-	background-color: #f8f9fa;
-	width: 100%;
-	height: 100vh;
 }
 
 .login-error {
@@ -192,11 +185,22 @@ input{
     animation-name: shake;
 }
 
+.modal.show+.overlay{
+	z-index:10
+}
+
 $breakpoint-mobile: 480px; 
 
 @media (max-width: $breakpoint-mobile) {
 	.login-wrapper {
 		width: 300px;
+
+		&.back .header {
+			margin-top: 20px;
+		}
+	}
+	.login-container {
+		min-height: -webkit-fill-available;
 	}
 }
 

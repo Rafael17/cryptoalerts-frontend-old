@@ -105,7 +105,7 @@ class CreateAlert extends Component {
 						</div>
 					</div>
 					<div className="form-group row margin-zero">
-						<label className="col-sm-3 col-form-label col-form-label-sm">Price Alert</label>
+						<label className="col-sm-3 col-form-label col-form-label-sm">Target Price</label>
 						<div className="col-sm-9">
 							<input 
 								className="form-control"
@@ -145,6 +145,7 @@ class CreateAlert extends Component {
 						<label className="col-sm-3 col-form-label col-form-label-sm">Message</label>
 						<div className="col-sm-9">
 							<textarea 
+								className="form-control"
 								type="text" 
 								onChange={ this.handleChange } 
 								name="message"

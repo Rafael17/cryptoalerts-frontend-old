@@ -106,13 +106,13 @@ class PriceAlerts extends Component {
 					showModalError={this.showModalError}
 				/>
 				<Footer />
-				<div className={"overlay" + hideOverlay}></div>
 				<Modal 
 					title={this.state.modal.title}
 					body={this.state.modal.body}
 					show={this.state.showModal}
 					hideModal={this.hideModal}
 				/>
+				<div className={"overlay" + hideOverlay}></div>
 			</div>
 		)
 	}

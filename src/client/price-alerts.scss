@@ -31,3 +31,18 @@
 		width: 100%;
 	}
 }
+
+.thead-dark {
+	background-color: #333;
+	color: white;
+}
+
+$breakpoint-mobile: 480px; 
+
+@media (max-width: $breakpoint-mobile) {
+	.create-price-box {
+		width: 300px;
+	}
+}
+
+	

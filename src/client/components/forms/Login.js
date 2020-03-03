@@ -5,8 +5,7 @@ class Login extends Component {
 
 	state = { 
         pass: "",
-        user: "",
-        loginError: false
+        user: ""
     }
 
 	handleChange = (event) => {
@@ -16,7 +15,8 @@ class Login extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({ loginError: false });
+        this.props.handleLogin(false);
+
         fetch('/api', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -24,8 +24,7 @@ class Login extends Component {
         .then(response => response.json())
         .then((result) => {
             if( result.error ) {
-                this.setState({ loginError: true});
-                this.props.handleLoginError("Wrong username and/or password");
+                this.props.handleLogin("Wrong username and/or password");
             } else {
                 this.props.history.push('/price-alerts');
             }

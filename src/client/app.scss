@@ -50,38 +50,36 @@ span.highlight {
     color: black
   }
 }
-/*
-input,
-input:hover,
-input:focus,
-input:active,
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active  {
-    -webkit-box-shadow: 0 0 0 30px #f8f9fa inset !important;
-}
-*/
 
-.main-app {
+.btn-primary {
+    background-color: #622da9;
+    border-color: #622da9;
+}
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+    background-color: #4f2588 !important;
+    border-color: #4f2588 !important;
+    box-shadow: none;
+}
+
+
+.login-page-wrapper {
+    background-color: #3E1E68;
+}
+.background-svgs {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  top:0;
   position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.background {
-  width: 100vw;
-  height: 100vh;
-  background: #3E1E68;
+  overflow: hidden;
 }
 
 $particleSize: 30vmin;
 $animationDuration: 6s;
 $amount: 20;
 
-.background svg {
+.background-svgs svg {
   border-radius: $particleSize;
   backface-visibility: hidden;
   position: absolute;
@@ -116,4 +114,22 @@ $amount: 20;
   100% {
     transform: translate3d(0, 0, 1px) rotate(360deg);
   }
+}
+
+$breakpoint-mobile: 480px; 
+
+@media (max-width: $breakpoint-mobile) {
+    table { 
+        table-layout:fixed;
+        overflow-x: auto;
+        display: block;
+    }
+    td { 
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+        word-wrap: break-word;
+    }
+    .background-svgs {
+        min-height: -webkit-fill-available;
+    }
 }

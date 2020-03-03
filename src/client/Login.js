@@ -24,16 +24,12 @@ class Login extends Component {
         }));
     }
 
-    handleLoginError = (message) => {
-        this.setState({loginError: message});
+    handleLogin = (error) => {
+        this.setState({loginError: error});
     }
 
-    handleSignupError = (message) => {
-        this.setState({signupError: message});
-    }
-
-    componentDidMount() {
-
+    handleSignup = (error) => {
+        this.setState({signupError: error});
     }
 
     showModal = (modalData) => {
@@ -50,57 +46,56 @@ class Login extends Component {
 
         const className = (this.state.isSignUp ? "sign-up " : " ");
         const classNameLoginError = (this.state.loginError ? "shake " : " ");
+        const classNameSignupError = (this.state.signupError ? "shake " : " ");
         const spans = Array.from(Array(10).keys());
         const svg = spans.map(s => <BitcointSVG key={s}/>);
 
         return (
-            <div>
-                <div className="background">
+            <div className="login-page-wrapper">
+                <div className="background-svgs">
                     {svg}
                 </div>
-                <div className="main-app">
-                    <div className="login-container">
-                        <div className={"login-wrapper front " + className + classNameLoginError}>
-                            <div className="login-header">
-                                <div>
-                                    <h2>
-                                        Welcome to<br/>Crypto Alerts
-                                    </h2>
-                                </div>
-                                <div>
-                                    <AlarmSVG />
-                                </div>
+                <div className="login-container">
+                    <div className={"login-wrapper front " + className + classNameLoginError}>
+                        <div className="login-header">
+                            <div>
+                                <h2>
+                                    Welcome to<br/>Crypto Alerts
+                                </h2>
                             </div>
                             <div>
-                                <LoginForm handleLoginError = { this.handleLoginError } />
-                                <div 
-                                    onClick={ this.handleClick } 
-                                    style={{marginTop:20}}
-                                >or Sign Up</div>
-                            </div>
-                            <div style={{display: this.state.loginError ? "block" : "none"}} className="login-error">
-                                {this.state.loginError}
+                                <AlarmSVG />
                             </div>
                         </div>
-                        <div className={"login-wrapper back " + className}>
-                            <div style={{marginTop:40}}>
-                                <h5>
-                                    Create account and track your favorite cryptocurrency coins!
-                                </h5>
-                            </div>
-                            <div style={{marginTop:20}}>
-                                <CreateAccountForm 
-                                    showModal = {this.showModal}
-                                    handleSignupError = { this.handleSignupError } 
-                                />
-                                <div 
-                                    onClick={ this.handleClick } 
-                                    style={{marginTop:20}}
-                                >or Sign In</div>
-                            </div>
-                            <div style={{display: this.state.signupError ? "block" : "none"}} className="login-error">
-                                {this.state.signupError}
-                            </div>
+                        <div>
+                            <LoginForm handleLogin = { this.handleLogin } />
+                            <div 
+                                onClick={ this.handleClick } 
+                                style={{marginTop:20}}
+                            >or Sign Up</div>
+                        </div>
+                        <div style={{display: this.state.loginError ? "block" : "none"}} className="login-error">
+                            {this.state.loginError}
+                        </div>
+                    </div>
+                    <div className={"login-wrapper back " + className + classNameSignupError}>
+                        <div className="header">
+                            <h5>
+                                Create account and track your favorite cryptocurrency coins!
+                            </h5>
+                        </div>
+                        <div style={{marginTop:20}}>
+                            <CreateAccountForm 
+                                showModal = {this.showModal}
+                                handleSignup = { this.handleSignup } 
+                            />
+                            <div 
+                                onClick={ this.handleClick } 
+                                style={{marginTop:20}}
+                            >or Sign In</div>
+                        </div>
+                        <div style={{display: this.state.signupError ? "block" : "none"}} className="login-error">
+                            {this.state.signupError}
                         </div>
                     </div>
                 </div>

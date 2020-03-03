@@ -11,6 +11,7 @@ class CreateAccount extends Component {
 
     handleSubmit = (event) => {
     	event.preventDefault();
+    	this.props.handleSignup(false);
 
     	fetch('/api/signup', {
 			method: 'POST',
@@ -19,8 +20,7 @@ class CreateAccount extends Component {
 		.then(response => response.json())
 		.then(result => {
 			if( result.error ) {
-                this.setState({ signupError: true});
-                this.props.handleSignupError(result.message);
+                this.props.handleSignup(result.message);
             } else {
             	this.props.showModal({modal:{title: "Account Created", body: "Please login to your newly created account"}});
             }
