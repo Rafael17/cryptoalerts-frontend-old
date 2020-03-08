@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import './app.scss';
-import Login from './Login';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import PrivateRoute from './components/PrivateRoute';
-import PriceAlerts from './PriceAlerts';
-import Utils from './utils';
+import './app.scss';
+import Login from './login/Login';
+import PrivateRoute from './../components/PrivateRoute';
+import PriceAlerts from './priceAlerts/PriceAlerts';
+import Utils from './../utils';
 
 class App extends Component {
 

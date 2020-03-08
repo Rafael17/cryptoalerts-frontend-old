@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './price-alerts.scss';
-import Header from './Header';
-import Footer from './Footer';
-import CreateAlertForm from './components/forms/CreateAlert';
-import Modal from './components/Modal';
+import Header from './../../components/Header';
+import Footer from './../../components/Footer';
+import CreateAlertForm from './../../components/forms/CreateAlert';
+import Modal from './../../components/Modal';
 
 class PriceAlerts extends Component {
 

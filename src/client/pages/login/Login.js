@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import LoginForm from './../../components/forms/Login';
+import CreateAccountForm from './../../components/forms/CreateAccount';
+import AlarmSVG from './../../svgs/AlarmSVG';
+import BitcointSVG from './../../svgs/BitcoinSVG';
+import Modal from './../../components/Modal';
 import './login.scss';
-import LoginForm from './components/forms/Login'
-import CreateAccountForm from './components/forms/CreateAccount'
-import AlarmSVG from './svgs/AlarmSVG';
-import BitcointSVG from './svgs/BitcoinSVG';
-import Modal from './components/Modal';
 
 class Login extends Component {
 
