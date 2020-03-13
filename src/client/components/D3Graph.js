@@ -21,33 +21,29 @@ class Graph extends React.Component {
           height = this.props.height,
           padding = 1.5, // separation between same-color circles
           clusterPadding = 6, // separation between different-color circles
-          maxRadius = 200;
+          maxRadius = 200,
+          maxArea = Math.PI * maxRadius * maxRadius
 
-      var n = data.length; // total number of circles
-
+      //data.splice(2,98)
+      var n = data.length; 
       var color = d3.scale.category10();
-          //.domain(d3.range(10));
 
       var maxCap = data.reduce((acc, { market_cap }) => { return acc + market_cap}, 0);
       var nodes = d3.range(n).map(function(e, index) {
-        const { market_cap, name, price } = data[index];
+        const { market_cap, name, price, symbol } = data[index];
         const xPercent = market_cap / maxCap;
-        const r = xPercent * maxRadius;
+        const r = Math.sqrt(xPercent * maxArea/ Math.PI)
         const rounder = (price < 1 ? 10000 : 100);
-        const d = {cluster: 0, radius: r, name, price: Math.round(price * rounder) / rounder };
+        const d = {cluster: 0, radius: r, symbol, name, price: Math.round(price * rounder) / rounder };
         return d;
       });
 
-      //nodes = [{cluster: 0, radius: 90},{cluster: 0, radius: 10}]
-      
       var svg = d3.select(".svg-container").append("svg")
           .attr("width", width)
           .attr("height", height);
-      var tooltip = d3.select("body").append("div") 
-          .attr("class", "tooltip")       
-          .style("opacity", 0);
 
-      function draw() {
+      function draw(firstPass) {
+        
         var force = d3.layout.force()
           .nodes(nodes)
           .size([width, height])
@@ -56,57 +52,52 @@ class Graph extends React.Component {
           .on("tick", tick)
           .start();
 
-        var circle = svg.selectAll("circle")
+        var containers = svg.selectAll("g")
           .data(nodes)
 
-        circle.exit().remove();
-        circle.enter()
-          .append("circle")
-          .attr("fill",function(d,i){ return color(i);})
-          .on("mouseover", function(d) {    
-            tooltip.transition()    
-                .duration(200)    
-                .style("opacity", .9);    
-            tooltip.html(d.name + "<br/>"  + d.price)  
-                .style("left", (d3.event.pageX) + "px")   
-                .style("top", (d3.event.pageY - 28) + "px");  
-            })          
-          .on("mouseout", function(d) {   
-              tooltip.transition()
-                  .duration(500)
-                  .style("opacity", 0);
-          })
+        containers.exit().remove();
+        containers.enter()
+          .append("g")
           .on("dblclick",function(d, i) {
-            svg.selectAll("circle")[0][d.index].remove();
+            this.remove();
             nodes.splice(d.index,1);
             data.splice(d.index,1);
-
             maxCap = data.reduce((acc, { market_cap }) => { return acc + market_cap}, 0);
+            
             nodes = nodes.map((n,index) => {
               const xPercent = data[index].market_cap / maxCap;
-              const r = xPercent * maxRadius;
+              const r = Math.sqrt(xPercent * maxArea/ Math.PI)
+              //const r = xPercent * maxRadius;
               n.radius = r;
               return n;
             })
-            draw();
-           })
+            draw(false)
+          })
           .call(force.drag);
+        
+        if(firstPass) {
+          containers.append("circle").attr("fill",function(d,i){ return color(i);})
+          containers.append("text");
+        }
 
-        circle
+        svg.selectAll("circle")
           .transition()
           .duration(1000)
-          .attr("r", function(d) { return d.radius })
-          
-        
+          .attr("r", function(d) { return d3.select(this.parentNode).datum().radius })
+
+        svg.selectAll("text")
+          .style("font-size", function(d) { return d3.select(this.parentNode).datum().radius / 2; })
+          .text(function(d){return d3.select(this.parentNode).datum().symbol})
+
         function tick(e) {
-          circle
+          containers
               .each(collide(.3))
-              .attr("cx", function(d) { return d.x; })
-              .attr("cy", function(d) { return d.y; });
+              .attr("transform", function(d){return "translate("+d.x+","+d.y+")"})
         }
       }
 
-      draw();
+      draw(true);
+      
       // Resolves collisions between d and all other circles.
       function collide(alpha) {
         var quadtree = d3.geom.quadtree(nodes);

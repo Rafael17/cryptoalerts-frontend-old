@@ -106,7 +106,7 @@ class PriceAlerts extends Component {
 					botName={this.state.botName}
 					showModalError={this.showModalError}
 				/>
-				<D3Graph width={500} height={500}/>
+				<D3Graph width={1100} height={700}/>
 				<Footer />
 				<Modal 
 					title={this.state.modal.title}
