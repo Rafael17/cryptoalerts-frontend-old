@@ -4,6 +4,7 @@ import Header from './../../components/Header';
 import Footer from './../../components/Footer';
 import CreateAlertForm from './../../components/forms/CreateAlert';
 import Modal from './../../components/Modal';
+import D3Graph from './../../components/D3Graph'
 
 class PriceAlerts extends Component {
 
@@ -105,6 +106,7 @@ class PriceAlerts extends Component {
 					botName={this.state.botName}
 					showModalError={this.showModalError}
 				/>
+				<D3Graph width={500} height={500}/>
 				<Footer />
 				<Modal 
 					title={this.state.modal.title}
