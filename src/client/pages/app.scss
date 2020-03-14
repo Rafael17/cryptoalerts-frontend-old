@@ -141,7 +141,11 @@ svg text {
   dominant-baseline: middle;
 }
 circle {
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
+  transition: .5s;
+  fill-opacity: .75;
+}
+circle:hover {
+  fill-opacity: 1;
 }
 
 div.tooltip { 

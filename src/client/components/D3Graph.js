@@ -67,7 +67,6 @@ class Graph extends React.Component {
             nodes = nodes.map((n,index) => {
               const xPercent = data[index].market_cap / maxCap;
               const r = Math.sqrt(xPercent * maxArea/ Math.PI)
-              //const r = xPercent * maxRadius;
               n.radius = r;
               return n;
             })
@@ -76,13 +75,13 @@ class Graph extends React.Component {
           .call(force.drag);
         
         if(firstPass) {
-          containers.append("circle").attr("fill",function(d,i){ return color(i);})
+          containers.append("circle")
+            .attr("fill",function(d,i){ return color(i);})
+            .attr("stroke", function(d,i){ return color(i);})
           containers.append("text");
         }
 
         svg.selectAll("circle")
-          .transition()
-          .duration(1000)
           .attr("r", function(d) { return d3.select(this.parentNode).datum().radius })
 
         svg.selectAll("text")
