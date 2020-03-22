@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import './app.scss';
+
 import Login from './login/Login';
 import PrivateRoute from './../components/PrivateRoute';
 import PriceAlerts from './priceAlerts/PriceAlerts';
+import MarketCap from './marketCap/MarketCap';
 import Utils from './../utils';
 
 class App extends Component {
@@ -24,6 +26,7 @@ class App extends Component {
                 <Switch>
                     <Route exact path='/' component={Login} />
                     <PrivateRoute path='/price-alerts' component={PriceAlerts} />
+                    <PrivateRoute path='/market-cap' component={MarketCap} />
                 </Switch>
             </main>
         );

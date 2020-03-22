@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom'
 
 class Header extends Component {
 
+
+
 	handleSignout = (event) => {
 		fetch('/api/logout', {
 			method: 'POST',
@@ -17,7 +19,7 @@ class Header extends Component {
 			<nav className="navbar navbar-expand">
 				<div className="nav-item">
 					<div className="navbar-brand">
-						Price Alerts
+						{this.props.title}
 					</div>
 				</div>
 				<div className="nav-item">
