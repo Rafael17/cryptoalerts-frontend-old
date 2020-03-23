@@ -26,7 +26,7 @@ class Login extends Component {
             if( result.error ) {
                 this.props.handleLogin("Wrong username and/or password");
             } else {
-                this.props.history.push('/price-alerts');
+                this.props.history.push('/alerts');
             }
         })
     }

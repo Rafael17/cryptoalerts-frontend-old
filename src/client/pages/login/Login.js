@@ -71,7 +71,7 @@ class Login extends Component {
                             <LoginForm handleLogin = { this.handleLogin } />
                             <div 
                                 onClick={ this.handleClick } 
-                                style={{marginTop:20}}
+                                style={{marginTop:20, cursor:'pointer'}}
                             >or Sign Up</div>
                         </div>
                         <div style={{display: this.state.loginError ? "block" : "none"}} className="login-error">
@@ -91,7 +91,7 @@ class Login extends Component {
                             />
                             <div 
                                 onClick={ this.handleClick } 
-                                style={{marginTop:20}}
+                                style={{marginTop:20, cursor:'pointer'}}
                             >or Sign In</div>
                         </div>
                         <div style={{display: this.state.signupError ? "block" : "none"}} className="login-error">

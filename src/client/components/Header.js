@@ -14,12 +14,21 @@ class Header extends Component {
 
 		this.props.history.push('/');
 	}
+
+	handlePageSelect = (event) => {
+		this.props.history.push('/'+event.currentTarget.dataset.page)
+	}
 	render() {
 		return(
 			<nav className="navbar navbar-expand">
-				<div className="nav-item">
-					<div className="navbar-brand">
-						{this.props.title}
+				<div data-page="alerts" onClick={this.handlePageSelect} className={(this.props.page === 'alerts' ? 'nav-selected ' : '') + "nav-item nav-item-custom"}>
+					<div className="">
+						Alerts
+					</div>
+				</div>
+				<div data-page="market-cap" onClick={this.handlePageSelect} className={(this.props.page === 'market-cap' ? 'nav-selected ' : '') + "nav-item nav-item-custom"}>
+					<div className="">
+						Market Cap
 					</div>
 				</div>
 				<div className="nav-item">

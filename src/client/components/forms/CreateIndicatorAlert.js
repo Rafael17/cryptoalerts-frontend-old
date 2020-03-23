@@ -2,15 +2,28 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
 
-class CreateAlert extends Component {
+class CreateIndicatorAlert extends Component {
 
 	state = {
-		price: "",
 		exchangePair: "",
-		cross: "Cross Up",
-		message: "",
-		exchange: "",
-		pair: "",
+		indicator: "",
+		timeframe_5: false,
+		timeframe_15: false,
+		timeframe_60: false,
+		timeframe_240: false,
+		timeframe: [
+			{ label: '5 minutes', value: '5'},
+			{ label: '15 minutes', value: '15'},
+			{ label: '1 hour', value: '60'},
+			{ label: '4 hours', value: '240'},
+		],
+		exchangePairSelect: [
+			{label: "Bitmex - XBTUSD", value: "Bitmex - XBTUSD"}
+		],
+		indicatorSelect: [
+			{ value: 'Engulfing', label: 'Engulfing'},
+			{ value: 'Star', label: 'Star'}
+		],
 		userData: null,
 	}
 
@@ -18,31 +31,39 @@ class CreateAlert extends Component {
 		this.setState({exchangePair: selectedOption});
 	}
 
+	handleSelectIndicatorChange = (selectedOption) => {
+		this.setState({indicator: selectedOption});
+	}
+
 	handleChange = (event) => {
-		const { name, value } = event.target;
-		this.setState({[name]:value});
+		const { name, value, type, checked } = event.target;
+		if(type == 'checkbox') {
+			this.setState({[name]: checked})
+		} else {
+			this.setState({[name]:value});
+		}
 	}
 
 	submitForm = () => {
 		const { value } = this.state.exchangePair;
-		const data = this.state;
+		const post = {};
 
 		if( value === undefined ) {
 			this.props.showModalError({modal:{title: "Whoops",body: "Please select a Trading Pair from the list"}});
 			return;
 		}
-		if( !data.price ) {
-			this.props.showModalError({modal:{title: "Whoops",body: "Please add a target price"}});
-			return;
-		}
 
-		data.exchange = value.split(" - ")[0];
-		data.pair = value.split(" - ")[1];
+		post.exchange = value.split(" - ")[0];
+		post.pair = value.split(" - ")[1];
+		post.indicator = this.state.indicator.value;
+		this.state.timeframe.map( timeframe => {
+			post["timeframe_" + timeframe.value] = this.state["timeframe_" + timeframe.value];
+		})
 
-		fetch('/api/alerts', {
+		fetch('/api/indicator-alert', {
 			method: 'POST',
 			headers: {'Content-Type': 'application/json'},
-    		body: JSON.stringify( data )})
+    		body: JSON.stringify( post )})
 		.then(response => response.json())
 		.then((result) => {
 			if(result.success) {
@@ -87,11 +108,28 @@ class CreateAlert extends Component {
 	render() {
 
 		const hideCreatePrice = (this.props.hide ? "hide" : "");
+		const createTimeframeCheckboxes = () => {
+			const html = this.state.timeframe.map( (time,index) => {
+				return(
+					<div key={index}>
+						<label style={{paddingRight: 20}}>
+							<input 
+								type="checkbox" 
+								name={"timeframe_" + time.value}
+								checked={this.state["timeframe_" + time.value]}
+								onChange={this.handleChange}
+							/> {time.label}
+						</label>
+					</div>
+				)
+			});
+			return html;
+		}
 
 		return(
 			<div className={"center-vertical create-price-box " + hideCreatePrice}>
 				<form autoComplete="off" className="card card-body bg-light" onSubmit={ this.handleSubmit }>
-					<h2 style={{color: "#333"}}>Create a new Price Alert</h2>
+					<h2 style={{color: "#333"}}>Create a new Indicator Alert</h2>
 					<hr/>
 					<div className="form-group row margin-zero">
 						<label className="col-sm-3 col-form-label col-form-label-sm">Trading Pair</label>
@@ -100,57 +138,27 @@ class CreateAlert extends Component {
 							value={this.state.exchangePair}
 							name="exchangePair"
 							onChange={this.handleSelectPairChange}
-							options={this.props.pairs}
+							options={this.state.exchangePairSelect}
 						/>
 						</div>
 					</div>
 					<div className="form-group row margin-zero">
-						<label className="col-sm-3 col-form-label col-form-label-sm">Target Price</label>
+						<label className="col-sm-3 col-form-label col-form-label-sm">Indicator</label>
 						<div className="col-sm-9">
-							<input 
-								className="form-control"
-								type="number" 
-								onChange={ this.handleChange } 
-								name="price"
-								value={ this.state.price }
+							<Select
+								value={this.state.indicator}
+								name="indicator"
+								onChange={this.handleSelectIndicatorChange}
+								options={this.state.indicatorSelect}
 							/>
 						</div>
 					</div>
 					<div className="form-group row margin-zero">
-						<label className="col-sm-3 col-form-label col-form-label-sm">Cross Type</label>
+						<label className="col-sm-3 col-form-label col-form-label-sm">Timeframe</label>
 						<div className="col-sm-9">
-							<div className="radio">
-								<label style={{paddingRight: 20}}>
-									<input 
-										type="radio" 
-										value="Cross Up" 
-										name="cross"
-										checked={this.state.cross === "Cross Up"}
-										onChange={this.handleChange}
-									/> Up
-								</label>
-								<label>
-									<input 
-										type="radio" 
-										value="Cross Down" 
-										name="cross"
-										checked={this.state.cross === "Cross Down"}
-										onChange={this.handleChange}
-									/> Down
-								</label>
+							<div className="checkbox"> 
+							{createTimeframeCheckboxes()}
 							</div>
-						</div>
-					</div>
-					<div className="form-group row margin-zero">
-						<label className="col-sm-3 col-form-label col-form-label-sm">Message</label>
-						<div className="col-sm-9">
-							<textarea 
-								className="form-control"
-								type="text" 
-								onChange={ this.handleChange } 
-								name="message"
-								value={ this.state.message }
-							/>
 						</div>
 					</div>
 					<div className="form-group row margin-zero">
@@ -166,4 +174,4 @@ class CreateAlert extends Component {
 	}
 }
 
-export default withRouter(CreateAlert);
+export default withRouter(CreateIndicatorAlert);

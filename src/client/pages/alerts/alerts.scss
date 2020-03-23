@@ -36,12 +36,38 @@
 	background-color: #333;
 	color: white;
 }
+.alerts-table-container {
+	margin: 20px;
+	margin-bottom: 80px;
+
+	h2 {
+		display: inline;
+	}
+}
+.button-svg-wrapper {
+	display: inline;
+	margin-left: 10px;
+	cursor: pointer;
+
+	svg:hover path{
+		fill: #622da9;
+	}
+	svg {
+		margin-top: -6px;
+	}
+}
 
 $breakpoint-mobile: 480px; 
 
 @media (max-width: $breakpoint-mobile) {
 	.create-price-box {
 		width: 300px;
+	}
+	.alerts-table-container {
+		margin: 20px 0px;
+		h2 {
+			margin-left: 10px;
+		}
 	}
 }
 

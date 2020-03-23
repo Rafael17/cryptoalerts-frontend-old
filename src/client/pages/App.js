@@ -4,7 +4,7 @@ import './app.scss';
 
 import Login from './login/Login';
 import PrivateRoute from './../components/PrivateRoute';
-import PriceAlerts from './priceAlerts/PriceAlerts';
+import Alerts from './alerts/Alerts';
 import MarketCap from './marketCap/MarketCap';
 import Utils from './../utils';
 
@@ -12,7 +12,7 @@ class App extends Component {
 
     componentWillMount() {
         if(Utils.isLogin() && this.props.location.pathname === '/') {
-            window.location = '/price-alerts';
+            window.location = '/alerts';
         }
     }
 
@@ -25,7 +25,7 @@ class App extends Component {
             <main>
                 <Switch>
                     <Route exact path='/' component={Login} />
-                    <PrivateRoute path='/price-alerts' component={PriceAlerts} />
+                    <PrivateRoute path='/alerts' component={Alerts} />
                     <PrivateRoute path='/market-cap' component={MarketCap} />
                 </Switch>
             </main>
