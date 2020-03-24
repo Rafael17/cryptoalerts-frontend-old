@@ -6,6 +6,7 @@ import CreateAlertForm from './../../components/forms/CreateAlert';
 import CreateIndicatorAlertForm from './../../components/forms/CreateIndicatorAlert';
 import Modal from './../../components/Modal';
 import AddSVG from './../../svgs/addSVG.js';
+import DeleteSVG from './../../svgs/deleteSVG.js';
 
 class PriceAlerts extends Component {
 
@@ -35,7 +36,7 @@ class PriceAlerts extends Component {
     }
 
 	handleDeletePriceAlert = (event) => {
-		const id = event.target.dataset.id;
+		const id = event.currentTarget.dataset.id;
 		
 		fetch('/api/alerts/' + id, {
 			headers: {'Content-Type': 'application/json'},
@@ -50,7 +51,7 @@ class PriceAlerts extends Component {
 	}
 
 	handleDeleteIndicatorAlert = (event) => {
-		const id = event.target.dataset.id;
+		const id = event.currentTarget.dataset.id;
 		
 		fetch('/api/indicator-alert/' + id, {
 			headers: {'Content-Type': 'application/json'},
@@ -74,7 +75,7 @@ class PriceAlerts extends Component {
 	}
 
 	render() {
-		const thead = ['Exchange', 'Trading Pair', 'Price', 'Cross Type', 'Message', 'Delete'];
+		const thead = ['Exchange', 'Trading Pair', 'Price', 'Cross Type', 'Message', ''];
 		
 		const theadHTML = thead.map((title, index) => <td key={index}>{title}</td>)
 		const hideOverlay = (this.state.hideCreatePrice && this.state.hideCreateIndicator ? " hide" : "");
@@ -86,12 +87,16 @@ class PriceAlerts extends Component {
 					<td>{e.price}</td>
 					<td>{e.cross}</td>
 					<td>{e.message}</td>
-					<td><button data-id={e._id} className="btn btn-outline-dark" onClick={this.handleDeletePriceAlert}>X</button></td>
+					<td style={{width:'25px'}}>
+						<div data-id={e._id} className="button-svg-wrapper" onClick={this.handleDeletePriceAlert}>
+							<DeleteSVG/>
+						</div>
+					</td>
 				</tr>
 			)}
 		);
 
-		const theadIndicator = ['Exchange', 'Trading Pair','Indicator', '5 min', '15 min', '1 hour', '4 hour', 'Delete'];
+		const theadIndicator = ['Exchange', 'Trading Pair','Indicator', '5 min', '15 min', '1 hour', '4 hour', ''];
 		const theadIndicatorAlertsHTML = theadIndicator.map((title, index) => <td key={index}>{title}</td>)
 		const checkbox = (checked) => {
 			
@@ -107,7 +112,11 @@ class PriceAlerts extends Component {
 					<td>{checkbox(e.timeframe_15)}</td>
 					<td>{checkbox(e.timeframe_60)}</td>
 					<td>{checkbox(e.timeframe_240)}</td>
-					<td><button data-id={e._id} className="btn btn-outline-dark" onClick={this.handleDeleteIndicatorAlert}>X</button></td>
+					<td style={{width:'25px'}}>
+						<div data-id={e._id} className="button-svg-wrapper" onClick={this.handleDeleteIndicatorAlert}>
+							<DeleteSVG/>
+						</div>
+					</td>
 				</tr>
 			)}
 		);

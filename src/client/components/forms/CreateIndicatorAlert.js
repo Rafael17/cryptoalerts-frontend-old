@@ -21,8 +21,8 @@ class CreateIndicatorAlert extends Component {
 			{label: "Bitmex - XBTUSD", value: "Bitmex - XBTUSD"}
 		],
 		indicatorSelect: [
-			{ value: 'Engulfing', label: 'Engulfing'},
-			{ value: 'Star', label: 'Star'}
+			{ value: 'Engulfing', label: 'Bullish/Bearish Engulfing'},
+			{ value: 'Star', label: 'Morning/Evening Star'}
 		],
 		userData: null,
 	}
@@ -168,6 +168,7 @@ class CreateIndicatorAlert extends Component {
 							<button type="button" onClick={this.props.handleCancelCreateAlert} className="btn btn-outline-dark">Cancel</button>
 						</div>
 					</div>
+					<p>The implemented indicators are reversal indicators that should only be consider when they occur at that timeframes' Support/Resistance zones. They also have to be a recent low/high to avoid noise (5 candles for Engulfing and 8 candles for Star)</p>
 				</form>
 			</div>
 		)

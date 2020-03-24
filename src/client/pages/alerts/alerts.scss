@@ -43,12 +43,17 @@
 	h2 {
 		display: inline;
 	}
+	> .button-svg-wrapper {
+		margin-left: 10px;
+	}
 }
 .button-svg-wrapper {
 	display: inline;
-	margin-left: 10px;
 	cursor: pointer;
 
+	svg path {
+		fill: #3E1E68;
+	}
 	svg:hover path{
 		fill: #622da9;
 	}
