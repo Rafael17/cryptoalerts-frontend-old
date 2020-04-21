@@ -96,7 +96,7 @@ class PriceAlerts extends Component {
 			)}
 		);
 
-		const theadIndicator = ['Exchange', 'Trading Pair','Indicator', '5 min', '15 min', '1 hour', '4 hour', ''];
+		const theadIndicator = ['Exchange', 'Trading Pair','Indicator', '1 min', '5 min', '15 min', '1 hour', '4 hour', ''];
 		const theadIndicatorAlertsHTML = theadIndicator.map((title, index) => <td key={index}>{title}</td>)
 		const checkbox = (checked) => {
 			
@@ -108,6 +108,7 @@ class PriceAlerts extends Component {
 					<td>{e.exchange}</td>
 					<td>{e.pair}</td>
 					<td>{e.indicator}</td>
+					<td>{checkbox(e.timeframe_1)}</td>
 					<td>{checkbox(e.timeframe_5)}</td>
 					<td>{checkbox(e.timeframe_15)}</td>
 					<td>{checkbox(e.timeframe_60)}</td>

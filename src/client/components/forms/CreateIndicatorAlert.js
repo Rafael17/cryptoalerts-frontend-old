@@ -7,18 +7,21 @@ class CreateIndicatorAlert extends Component {
 	state = {
 		exchangePair: "",
 		indicator: "",
+		timeframe_1: false,
 		timeframe_5: false,
 		timeframe_15: false,
 		timeframe_60: false,
 		timeframe_240: false,
 		timeframe: [
+			{ label: '1 minutes', value: '1'},
 			{ label: '5 minutes', value: '5'},
 			{ label: '15 minutes', value: '15'},
 			{ label: '1 hour', value: '60'},
 			{ label: '4 hours', value: '240'},
 		],
 		exchangePairSelect: [
-			{label: "Bitmex - XBTUSD", value: "Bitmex - XBTUSD"}
+			{label: "Binance - ETHUSDT", value: "Binance - ETHUSDT"},
+			{label: "Binance - BTCUSDT", value: "Binance - BTCUSDT"}
 		],
 		indicatorSelect: [
 			{ value: 'Engulfing', label: 'Bullish/Bearish Engulfing'},
@@ -168,7 +171,7 @@ class CreateIndicatorAlert extends Component {
 							<button type="button" onClick={this.props.handleCancelCreateAlert} className="btn btn-outline-dark">Cancel</button>
 						</div>
 					</div>
-					<p>The implemented indicators are reversal indicators that should only be consider when they occur at that timeframes' Support/Resistance zones. They also have to be a recent low/high to avoid noise (5 candles for Engulfing and 8 candles for Star)</p>
+					<p>The implemented indicators are reversal indicators that should only be consider when they occur at that timeframes' Support/Resistance zones. They will only trigger if they are a recent low/high in an attempt to reduce noise</p>
 				</form>
 			</div>
 		)
