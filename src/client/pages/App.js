@@ -11,24 +11,18 @@ import Utils from './../utils';
 class App extends Component {
 
     componentWillMount() {
-        if(Utils.isLogin() && this.props.location.pathname === '/') {
+        if (Utils.isLogin() && this.props.location.pathname === '/') {
             window.location = '/alerts';
         }
     }
 
-    componentDidMount() {
-
-    }
-
     render() {
         return (
-            <main>
-                <Switch>
-                    <Route exact path='/' component={Login} />
-                    <PrivateRoute path='/alerts' component={Alerts} />
-                    <PrivateRoute path='/market-cap' component={MarketCap} />
-                </Switch>
-            </main>
+            <Switch>
+                <Route exact path='/' component={Login} />
+                <Route path='/alerts' component={Alerts} />
+                <Route path='/market-cap' component={MarketCap} />
+            </Switch>
         );
     }
 }

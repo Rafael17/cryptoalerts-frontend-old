@@ -15,24 +15,24 @@ class CreateAlert extends Component {
 	}
 
 	handleSelectPairChange = (selectedOption) => {
-		this.setState({exchangePair: selectedOption});
+		this.setState({ exchangePair: selectedOption });
 	}
 
 	handleChange = (event) => {
 		const { name, value } = event.target;
-		this.setState({[name]:value});
+		this.setState({ [name]: value });
 	}
 
 	submitForm = () => {
 		const { value } = this.state.exchangePair;
 		const data = this.state;
 
-		if( value === undefined ) {
-			this.props.showModalError({modal:{title: "Whoops",body: "Please select a Trading Pair from the list"}});
+		if (value === undefined) {
+			this.props.showModalError({ modal: { title: "Whoops", body: "Please select a Trading Pair from the list" } });
 			return;
 		}
-		if( !data.price ) {
-			this.props.showModalError({modal:{title: "Whoops",body: "Please add a target price"}});
+		if (!data.price) {
+			this.props.showModalError({ modal: { title: "Whoops", body: "Please add a target price" } });
 			return;
 		}
 
@@ -41,15 +41,16 @@ class CreateAlert extends Component {
 
 		fetch('/api/alerts', {
 			method: 'POST',
-			headers: {'Content-Type': 'application/json'},
-    		body: JSON.stringify( data )})
-		.then(response => response.json())
-		.then((result) => {
-			if(result.success) {
-				this.props.updateAlerts();
-				this.props.handleCancelCreateAlert();
-			}
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data)
 		})
+			.then(response => response.json())
+			.then((result) => {
+				if (result.success) {
+					this.props.updateAlerts();
+					this.props.handleCancelCreateAlert();
+				}
+			})
 	}
 
 	handleSubmit = (event) => {
@@ -58,29 +59,29 @@ class CreateAlert extends Component {
 		// check if user has set up telegram before continuing
 		const { telegramChatId, _id } = this.props.userData;
 
-		if(telegramChatId === undefined) {
-			fetch('/api/users/' + _id+'/?filters=telegramChatId', {
+		if (telegramChatId === undefined) {
+			fetch('/api/users/' + _id + '/?filters=telegramChatId', {
 				method: 'GET',
-				headers: {'Content-Type': 'application/json'},
+				headers: { 'Content-Type': 'application/json' },
 			})
-			.then(response => response.json())
-			.then(result => {
-				if(result.error) {
-					const body = this.renderModalBody()
-					this.props.showModalError({modal:{title: "Telegram has not been linked!", body: body}});
-				} else {
-					this.submitForm();
-				}
-			});
+				.then(response => response.json())
+				.then(result => {
+					if (result.error) {
+						const body = this.renderModalBody()
+						this.props.showModalError({ modal: { title: "Telegram has not been linked!", body: body } });
+					} else {
+						this.submitForm();
+					}
+				});
 		} else {
 			this.submitForm();
 		}
-		
+
 	}
 
 	renderModalBody = () => {
-		return (<p>Please set up telegram notifications by sending the following passcode 
-		<span className="highlight"> {this.props.userData.telegramPasscode}</span> to <span className="highlight">{this.props.botName} </span>
+		return (<p>Please set up telegram notifications by sending the following passcode
+			<span className="highlight"> {this.props.userData.telegramPasscode}</span> to <span className="highlight">{this.props.botName} </span>
 		to receive alerts right on your phone</p>)
 	}
 
@@ -88,31 +89,29 @@ class CreateAlert extends Component {
 
 		const hideCreatePrice = (this.props.hide ? "hide" : "");
 
-		return(
-			<div className={"center-vertical create-price-box " + hideCreatePrice}>
-				<form autoComplete="off" className="card card-body bg-light" onSubmit={ this.handleSubmit }>
-					<h2 style={{color: "#333"}}>Create a new Price Alert</h2>
-					<hr/>
+		return (
+			<div className={"create-price-box " + hideCreatePrice}>
+				<form autoComplete="off" onSubmit={this.handleSubmit}>
 					<div className="form-group row margin-zero">
 						<label className="col-sm-3 col-form-label col-form-label-sm">Trading Pair</label>
 						<div className="col-sm-9">
-						<Select
-							value={this.state.exchangePair}
-							name="exchangePair"
-							onChange={this.handleSelectPairChange}
-							options={this.props.pairs}
-						/>
+							<Select
+								value={this.state.exchangePair}
+								name="exchangePair"
+								onChange={this.handleSelectPairChange}
+								options={this.props.pairs}
+							/>
 						</div>
 					</div>
 					<div className="form-group row margin-zero">
 						<label className="col-sm-3 col-form-label col-form-label-sm">Target Price</label>
 						<div className="col-sm-9">
-							<input 
+							<input
 								className="form-control"
-								type="number" 
-								onChange={ this.handleChange } 
+								type="number"
+								onChange={this.handleChange}
 								name="price"
-								value={ this.state.price }
+								value={this.state.price}
 							/>
 						</div>
 					</div>
@@ -120,19 +119,19 @@ class CreateAlert extends Component {
 						<label className="col-sm-3 col-form-label col-form-label-sm">Cross Type</label>
 						<div className="col-sm-9">
 							<div className="radio">
-								<label style={{paddingRight: 20}}>
-									<input 
-										type="radio" 
-										value="Cross Up" 
+								<label style={{ paddingRight: 20 }}>
+									<input
+										type="radio"
+										value="Cross Up"
 										name="cross"
 										checked={this.state.cross === "Cross Up"}
 										onChange={this.handleChange}
 									/> Up
 								</label>
 								<label>
-									<input 
-										type="radio" 
-										value="Cross Down" 
+									<input
+										type="radio"
+										value="Cross Down"
 										name="cross"
 										checked={this.state.cross === "Cross Down"}
 										onChange={this.handleChange}
@@ -144,19 +143,19 @@ class CreateAlert extends Component {
 					<div className="form-group row margin-zero">
 						<label className="col-sm-3 col-form-label col-form-label-sm">Message</label>
 						<div className="col-sm-9">
-							<textarea 
+							<textarea
 								className="form-control"
-								type="text" 
-								onChange={ this.handleChange } 
+								type="text"
+								onChange={this.handleChange}
 								name="message"
-								value={ this.state.message }
+								value={this.state.message}
 							/>
 						</div>
 					</div>
 					<div className="form-group row margin-zero">
 						<label className="col-sm-3 col-form-label col-form-label-sm"></label>
 						<div className="col-sm-9">
-							<button style={{marginRight: 10}} className="btn btn-primary">Submit</button>
+							<button style={{ marginRight: 10 }} className="btn btn-primary">Submit</button>
 							<button type="button" onClick={this.props.handleCancelCreateAlert} className="btn btn-outline-dark">Cancel</button>
 						</div>
 					</div>

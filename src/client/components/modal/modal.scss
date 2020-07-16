@@ -1,0 +1,12 @@
+.modal {
+  z-index: 10;
+}
+.modal.show {
+  display: block
+}
+.overlay.show {
+  display: block
+}
+.overlay {
+  display: none
+}

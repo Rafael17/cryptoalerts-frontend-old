@@ -185,10 +185,6 @@ input{
     animation-name: shake;
 }
 
-.modal.show+.overlay{
-	z-index:10
-}
-
 $breakpoint-mobile: 480px; 
 
 @media (max-width: $breakpoint-mobile) {

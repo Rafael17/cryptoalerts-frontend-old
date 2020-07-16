@@ -3,43 +3,43 @@ import LoginForm from './../../components/forms/Login';
 import CreateAccountForm from './../../components/forms/CreateAccount';
 import AlarmSVG from './../../svgs/AlarmSVG';
 import BitcointSVG from './../../svgs/BitcoinSVG';
-import Modal from './../../components/Modal';
+import Modal from '../../components/modal';
 import './login.scss';
 
 class Login extends Component {
 
-    state = { 
+    state = {
         isSignUp: false,
         loginError: false,
         signupError: false,
         showModal: false,
-        modal: {title: "", body: ""},
+        modal: { title: "", body: "" },
     }
 
     handleClick = () => {
-        this.setState( prevState => ({
-          isSignUp: !prevState.isSignUp,
-          loginError: false,
-          signupError: false
+        this.setState(prevState => ({
+            isSignUp: !prevState.isSignUp,
+            loginError: false,
+            signupError: false
         }));
     }
 
     handleLogin = (error) => {
-        this.setState({loginError: error});
+        this.setState({ loginError: error });
     }
 
     handleSignup = (error) => {
-        this.setState({signupError: error});
+        this.setState({ signupError: error });
     }
 
     showModal = (modalData) => {
         this.setState(modalData);
-        this.setState({showModal: true})
+        this.setState({ showModal: true })
     }
 
     hideModal = () => {
-        this.setState({showModal: false});
-        this.setState({isSignUp: false});
+        this.setState({ showModal: false });
+        this.setState({ isSignUp: false });
     }
 
     render() {
@@ -48,7 +48,7 @@ class Login extends Component {
         const classNameLoginError = (this.state.loginError ? "shake " : " ");
         const classNameSignupError = (this.state.signupError ? "shake " : " ");
         const spans = Array.from(Array(10).keys());
-        const svg = spans.map(s => <BitcointSVG key={s}/>);
+        const svg = spans.map(s => <BitcointSVG key={s} />);
 
         return (
             <div className="login-page-wrapper">
@@ -60,7 +60,7 @@ class Login extends Component {
                         <div className="login-header">
                             <div>
                                 <h2>
-                                    Welcome to<br/>Crypto Alerts
+                                    Welcome to<br />Crypto Alerts
                                 </h2>
                             </div>
                             <div>
@@ -68,13 +68,13 @@ class Login extends Component {
                             </div>
                         </div>
                         <div>
-                            <LoginForm handleLogin = { this.handleLogin } />
-                            <div 
-                                onClick={ this.handleClick } 
-                                style={{marginTop:20, cursor:'pointer'}}
+                            <LoginForm handleLogin={this.handleLogin} />
+                            <div
+                                onClick={this.handleClick}
+                                style={{ marginTop: 20, cursor: 'pointer' }}
                             >or Sign Up</div>
                         </div>
-                        <div style={{display: this.state.loginError ? "block" : "none"}} className="login-error">
+                        <div style={{ display: this.state.loginError ? "block" : "none" }} className="login-error">
                             {this.state.loginError}
                         </div>
                     </div>
@@ -84,23 +84,23 @@ class Login extends Component {
                                 Create account and track your favorite cryptocurrency coins!
                             </h5>
                         </div>
-                        <div style={{marginTop:20}}>
-                            <CreateAccountForm 
-                                showModal = {this.showModal}
-                                handleSignup = { this.handleSignup } 
+                        <div style={{ marginTop: 20 }}>
+                            <CreateAccountForm
+                                showModal={this.showModal}
+                                handleSignup={this.handleSignup}
                             />
-                            <div 
-                                onClick={ this.handleClick } 
-                                style={{marginTop:20, cursor:'pointer'}}
+                            <div
+                                onClick={this.handleClick}
+                                style={{ marginTop: 20, cursor: 'pointer' }}
                             >or Sign In</div>
                         </div>
-                        <div style={{display: this.state.signupError ? "block" : "none"}} className="login-error">
+                        <div style={{ display: this.state.signupError ? "block" : "none" }} className="login-error">
                             {this.state.signupError}
                         </div>
                     </div>
                 </div>
                 <div className={"overlay" + (this.state.showModal ? "" : "hide")}></div>
-                <Modal 
+                <Modal
                     title={this.state.modal.title}
                     body={this.state.modal.body}
                     show={this.state.showModal}

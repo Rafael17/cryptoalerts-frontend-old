@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
+import WithAlertModal from '../withAlertModal';
 
 class CreateIndicatorAlert extends Component {
 
@@ -13,37 +14,37 @@ class CreateIndicatorAlert extends Component {
 		timeframe_60: false,
 		timeframe_240: false,
 		timeframe: [
-			{ label: '1 minutes', value: '1'},
-			{ label: '5 minutes', value: '5'},
-			{ label: '15 minutes', value: '15'},
-			{ label: '1 hour', value: '60'},
-			{ label: '4 hours', value: '240'},
+			{ label: '1 minutes', value: '1' },
+			{ label: '5 minutes', value: '5' },
+			{ label: '15 minutes', value: '15' },
+			{ label: '1 hour', value: '60' },
+			{ label: '4 hours', value: '240' },
 		],
 		exchangePairSelect: [
-			{label: "Binance - ETHUSDT", value: "Binance - ETHUSDT"},
-			{label: "Binance - BTCUSDT", value: "Binance - BTCUSDT"}
+			{ label: "Binance - ETHUSDT", value: "Binance - ETHUSDT" },
+			{ label: "Binance - BTCUSDT", value: "Binance - BTCUSDT" }
 		],
 		indicatorSelect: [
-			{ value: 'Engulfing', label: 'Bullish/Bearish Engulfing'},
-			{ value: 'Star', label: 'Morning/Evening Star'}
+			{ value: 'Engulfing', label: 'Bullish/Bearish Engulfing' },
+			{ value: 'Star', label: 'Morning/Evening Star' }
 		],
 		userData: null,
 	}
 
 	handleSelectPairChange = (selectedOption) => {
-		this.setState({exchangePair: selectedOption});
+		this.setState({ exchangePair: selectedOption });
 	}
 
 	handleSelectIndicatorChange = (selectedOption) => {
-		this.setState({indicator: selectedOption});
+		this.setState({ indicator: selectedOption });
 	}
 
 	handleChange = (event) => {
 		const { name, value, type, checked } = event.target;
-		if(type == 'checkbox') {
-			this.setState({[name]: checked})
+		if (type == 'checkbox') {
+			this.setState({ [name]: checked })
 		} else {
-			this.setState({[name]:value});
+			this.setState({ [name]: value });
 		}
 	}
 
@@ -51,73 +52,81 @@ class CreateIndicatorAlert extends Component {
 		const { value } = this.state.exchangePair;
 		const post = {};
 
-		if( value === undefined ) {
-			this.props.showModalError({modal:{title: "Whoops",body: "Please select a Trading Pair from the list"}});
+		if (value === undefined) {
+			this.props.showModalError({ modal: { title: "Whoops", body: "Please select a Trading Pair from the list" } });
 			return;
 		}
 
 		post.exchange = value.split(" - ")[0];
 		post.pair = value.split(" - ")[1];
 		post.indicator = this.state.indicator.value;
-		this.state.timeframe.map( timeframe => {
+		this.state.timeframe.map(timeframe => {
 			post["timeframe_" + timeframe.value] = this.state["timeframe_" + timeframe.value];
 		})
 
 		fetch('/api/indicator-alert', {
 			method: 'POST',
-			headers: {'Content-Type': 'application/json'},
-    		body: JSON.stringify( post )})
-		.then(response => response.json())
-		.then((result) => {
-			if(result.success) {
-				this.props.updateAlerts();
-				this.props.handleCancelCreateAlert();
-			}
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(post)
 		})
+			.then(response => response.json())
+			.then((result) => {
+				if (result.success) {
+					this.props.updateAlerts();
+					this.props.handleCancelCreateAlert();
+				}
+			})
+	}
+
+	hideAlertModal = () => {
+		this.setState({ isAlertModalOpen: false })
 	}
 
 	handleSubmit = (event) => {
 		event.preventDefault();
+		const body = this.renderModalBody()
+		//this.props.showModalError({ modal: { title: "Telegram has not been linked!", body: body } });
+		this.setState({ isAlertModalOpen: true })
+		return;
 
 		// check if user has set up telegram before continuing
 		const { telegramChatId, _id } = this.props.userData;
 
-		if(telegramChatId === undefined) {
-			fetch('/api/users/' + _id+'/?filters=telegramChatId', {
+		if (telegramChatId === undefined) {
+			fetch('/api/users/' + _id + '/?filters=telegramChatId', {
 				method: 'GET',
-				headers: {'Content-Type': 'application/json'},
+				headers: { 'Content-Type': 'application/json' },
 			})
-			.then(response => response.json())
-			.then(result => {
-				if(result.error) {
-					const body = this.renderModalBody()
-					this.props.showModalError({modal:{title: "Telegram has not been linked!", body: body}});
-				} else {
-					this.submitForm();
-				}
-			});
+				.then(response => response.json())
+				.then(result => {
+					if (result.error) {
+						const body = this.renderModalBody()
+						this.props.showModalError({ modal: { title: "Telegram has not been linked!", body: body } });
+					} else {
+						this.submitForm();
+					}
+				});
 		} else {
 			this.submitForm();
 		}
-		
+
 	}
 
 	renderModalBody = () => {
-		return (<p>Please set up telegram notifications by sending the following passcode 
-		<span className="highlight"> {this.props.userData.telegramPasscode}</span> to <span className="highlight">{this.props.botName} </span>
+		return (<p>Please set up telegram notifications by sending the following passcode
+			<span className="highlight"> {this.props.userData.telegramPasscode}</span> to <span className="highlight">{this.props.botName} </span>
 		to receive alerts right on your phone</p>)
 	}
 
 	render() {
 
-		const hideCreatePrice = (this.props.hide ? "hide" : "");
 		const createTimeframeCheckboxes = () => {
-			const html = this.state.timeframe.map( (time,index) => {
-				return(
+			const html = this.state.timeframe.map((time, index) => {
+				return (
 					<div key={index}>
-						<label style={{paddingRight: 20}}>
-							<input 
-								type="checkbox" 
+						<label style={{ paddingRight: 20 }}>
+							<input
+								type="checkbox"
 								name={"timeframe_" + time.value}
 								checked={this.state["timeframe_" + time.value]}
 								onChange={this.handleChange}
@@ -129,20 +138,24 @@ class CreateIndicatorAlert extends Component {
 			return html;
 		}
 
-		return(
-			<div className={"center-vertical create-price-box " + hideCreatePrice}>
-				<form autoComplete="off" className="card card-body bg-light" onSubmit={ this.handleSubmit }>
-					<h2 style={{color: "#333"}}>Create a new Indicator Alert</h2>
-					<hr/>
+		return (
+			<div className={"create-price-box "}>
+				{this.state.isAlertModalOpen ?
+					<WithAlertModal title="Telegram has not been linked!" hideModal={this.hideAlertModal}>
+						{this.renderModalBody()}
+					</WithAlertModal>
+					: null
+				}
+				<form autoComplete="off" onSubmit={this.handleSubmit}>
 					<div className="form-group row margin-zero">
 						<label className="col-sm-3 col-form-label col-form-label-sm">Trading Pair</label>
 						<div className="col-sm-9">
-						<Select
-							value={this.state.exchangePair}
-							name="exchangePair"
-							onChange={this.handleSelectPairChange}
-							options={this.state.exchangePairSelect}
-						/>
+							<Select
+								value={this.state.exchangePair}
+								name="exchangePair"
+								onChange={this.handleSelectPairChange}
+								options={this.state.exchangePairSelect}
+							/>
 						</div>
 					</div>
 					<div className="form-group row margin-zero">
@@ -159,15 +172,15 @@ class CreateIndicatorAlert extends Component {
 					<div className="form-group row margin-zero">
 						<label className="col-sm-3 col-form-label col-form-label-sm">Timeframe</label>
 						<div className="col-sm-9">
-							<div className="checkbox"> 
-							{createTimeframeCheckboxes()}
+							<div className="checkbox">
+								{createTimeframeCheckboxes()}
 							</div>
 						</div>
 					</div>
 					<div className="form-group row margin-zero">
 						<label className="col-sm-3 col-form-label col-form-label-sm"></label>
 						<div className="col-sm-9">
-							<button style={{marginRight: 10}} className="btn btn-primary">Submit</button>
+							<button style={{ marginRight: 10 }} className="btn btn-primary">Submit</button>
 							<button type="button" onClick={this.props.handleCancelCreateAlert} className="btn btn-outline-dark">Cancel</button>
 						</div>
 					</div>
