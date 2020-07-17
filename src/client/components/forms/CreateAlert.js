@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
+import AlertModal from '../modal/AlertModal';
 
 class CreateAlert extends Component {
 
@@ -12,6 +13,7 @@ class CreateAlert extends Component {
 		exchange: "",
 		pair: "",
 		userData: null,
+		isAlertModalOpen: false
 	}
 
 	handleSelectPairChange = (selectedOption) => {
@@ -28,11 +30,11 @@ class CreateAlert extends Component {
 		const data = this.state;
 
 		if (value === undefined) {
-			this.props.showModalError({ modal: { title: "Whoops", body: "Please select a Trading Pair from the list" } });
+			this.setState({ isAlertModalOpen: true, errorTitle: "Whoops", errorMessage: "Please select a Trading Pair from the list" });
 			return;
 		}
 		if (!data.price) {
-			this.props.showModalError({ modal: { title: "Whoops", body: "Please add a target price" } });
+			this.setState({ isAlertModalOpen: true, errorTitle: "Whoops", errorMessage: "Please add a target price" });
 			return;
 		}
 
@@ -67,8 +69,7 @@ class CreateAlert extends Component {
 				.then(response => response.json())
 				.then(result => {
 					if (result.error) {
-						const body = this.renderModalBody()
-						this.props.showModalError({ modal: { title: "Telegram has not been linked!", body: body } });
+						this.setState({ isAlertModalOpen: true, errorTitle: "Telegram has not been linked!", errorMessage: this.renderModalBody() });
 					} else {
 						this.submitForm();
 					}
@@ -80,9 +81,11 @@ class CreateAlert extends Component {
 	}
 
 	renderModalBody = () => {
-		return (<p>Please set up telegram notifications by sending the following passcode
-			<span className="highlight"> {this.props.userData.telegramPasscode}</span> to <span className="highlight">{this.props.botName} </span>
-		to receive alerts right on your phone</p>)
+		return (
+			<p>Please set up telegram notifications by sending the following passcode
+				<span className="highlight"> {this.props.userData.telegramPasscode}</span> to <span className="highlight">{this.props.botName} </span>
+		to receive alerts right on your phone</p>
+		)
 	}
 
 	render() {
@@ -90,7 +93,14 @@ class CreateAlert extends Component {
 		const hideCreatePrice = (this.props.hide ? "hide" : "");
 
 		return (
-			<div className={"create-price-box " + hideCreatePrice}>
+			< div className={"create-price-box " + hideCreatePrice} >
+				{
+					this.state.isAlertModalOpen ?
+						<AlertModal title={this.state.errorTitle} hideModal={() => this.setState({ isAlertModalOpen: false })}>
+							{this.state.errorMessage}
+						</AlertModal>
+						: null
+				}
 				<form autoComplete="off" onSubmit={this.handleSubmit}>
 					<div className="form-group row margin-zero">
 						<label className="col-sm-3 col-form-label col-form-label-sm">Trading Pair</label>
@@ -160,7 +170,7 @@ class CreateAlert extends Component {
 						</div>
 					</div>
 				</form>
-			</div>
+			</div >
 		)
 	}
 }

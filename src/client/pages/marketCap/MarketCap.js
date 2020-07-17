@@ -19,11 +19,7 @@ class PriceAlerts extends Component {
 
   render() {
     return (
-      <div>
-        <Header page="market-cap" />
-        <div className="svg-container"></div>
-        <Footer />
-      </div>
+      <div className="svg-container"></div>
     )
   }
 }

@@ -1,8 +1,8 @@
 import React from 'react';
-import Modal from './modal';
+import Modal from './Modal';
 
 
-const WithAlertModal = (props) => {
+const AlertModal = (props) => {
     return (
 
         <Modal
@@ -15,4 +15,4 @@ const WithAlertModal = (props) => {
 }
 
 
-export default WithAlertModal;
+export default AlertModal;

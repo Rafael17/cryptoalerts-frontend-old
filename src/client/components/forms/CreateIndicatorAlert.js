@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
-import WithAlertModal from '../withAlertModal';
+import AlertModal from '../modal/AlertModal';
 
 class CreateIndicatorAlert extends Component {
 
@@ -48,7 +48,12 @@ class CreateIndicatorAlert extends Component {
 		const post = {};
 
 		if (value === undefined) {
-			this.props.showModalError({ modal: { title: "Whoops", body: "Please select a Trading Pair from the list" } });
+			this.setState({ isAlertModalOpen: true, errorTitle: "Whoops", errorMessage: "Please select a Trading Pair from the list" });
+			return;
+		}
+
+		if (this.state.indicator.value === undefined) {
+			this.setState({ isAlertModalOpen: true, errorTitle: "Whoops", errorMessage: "Please select an Indicator" });
 			return;
 		}
 
@@ -73,10 +78,6 @@ class CreateIndicatorAlert extends Component {
 			})
 	}
 
-	hideAlertModal = () => {
-		this.setState({ isAlertModalOpen: false })
-	}
-
 	handleSubmit = (event) => {
 		event.preventDefault();
 
@@ -91,7 +92,7 @@ class CreateIndicatorAlert extends Component {
 				.then(response => response.json())
 				.then(result => {
 					if (result.error) {
-						this.setState({ isAlertModalOpen: true })
+						this.setState({ isAlertModalOpen: true, errorTitle: "Telegram has not been linked!", errorMessage: this.renderModalBody() });
 					} else {
 						this.submitForm();
 					}
@@ -130,11 +131,12 @@ class CreateIndicatorAlert extends Component {
 
 		return (
 			<div className={"create-price-box "}>
-				{this.state.isAlertModalOpen ?
-					<WithAlertModal title="Telegram has not been linked!" hideModal={this.hideAlertModal}>
-						{this.renderModalBody()}
-					</WithAlertModal>
-					: null
+				{
+					this.state.isAlertModalOpen ?
+						<AlertModal title={this.state.errorTitle} hideModal={() => this.setState({ isAlertModalOpen: false })}>
+							{this.state.errorMessage}
+						</AlertModal>
+						: null
 				}
 				<form autoComplete="off" onSubmit={this.handleSubmit}>
 					<div className="form-group row margin-zero">

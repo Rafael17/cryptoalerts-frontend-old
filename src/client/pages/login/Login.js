@@ -3,7 +3,7 @@ import LoginForm from './../../components/forms/Login';
 import CreateAccountForm from './../../components/forms/CreateAccount';
 import AlarmSVG from './../../svgs/AlarmSVG';
 import BitcointSVG from './../../svgs/BitcoinSVG';
-import Modal from '../../components/modal';
+import AlertModal from '../../components/modal/AlertModal';
 import './login.scss';
 
 class Login extends Component {
@@ -12,8 +12,7 @@ class Login extends Component {
         isSignUp: false,
         loginError: false,
         signupError: false,
-        showModal: false,
-        modal: { title: "", body: "" },
+        isModalOpen: false
     }
 
     handleClick = () => {
@@ -32,13 +31,12 @@ class Login extends Component {
         this.setState({ signupError: error });
     }
 
-    showModal = (modalData) => {
-        this.setState(modalData);
-        this.setState({ showModal: true })
+    showModal = () => {
+        this.setState({ isModalOpen: true })
     }
 
     hideModal = () => {
-        this.setState({ showModal: false });
+        this.setState({ isModalOpen: false });
         this.setState({ isSignUp: false });
     }
 
@@ -99,13 +97,13 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
-                <div className={"overlay" + (this.state.showModal ? "" : "hide")}></div>
-                {this.state.showModal ?
-                    <Modal
-                        title={this.state.modal.title}
-                        children={this.state.modal.children}
+                {this.state.isModalOpen ?
+                    <AlertModal
+                        title="Account Created"
                         hideModal={this.hideModal}
-                    />
+                    >
+                        Please login to your newly created account
+                    </AlertModal>
                     : null
                 }
             </div>

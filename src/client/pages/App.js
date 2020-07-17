@@ -20,8 +20,8 @@ class App extends Component {
         return (
             <Switch>
                 <Route exact path='/' component={Login} />
-                <Route path='/alerts' component={Alerts} />
-                <Route path='/market-cap' component={MarketCap} />
+                <PrivateRoute path='/alerts' page='alerts' component={Alerts} />
+                <PrivateRoute path='/market-cap' page='market-cap' component={MarketCap} />
             </Switch>
         );
     }
