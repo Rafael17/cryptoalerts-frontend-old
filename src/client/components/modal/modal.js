@@ -14,8 +14,8 @@ const Modal = (props) => {
 
 	return (
 		<React.Fragment>
-			<div className={"overlay show"} style={{ zIndex: props.zIndex }}></div>
-			<div onClick={e => clickOverlay(e)} className={"modal-alert modal show"} style={{ zIndex: props.zIndex }}>
+			<div className={`overlay ${props.isOpen ? "show" : ""}`} style={{ zIndex: props.zIndex }}></div>
+			<div onClick={e => clickOverlay(e)} className={`modal-alert modal ${props.isOpen ? "show" : ""}`} style={{ zIndex: props.zIndex }}>
 				<div onClick={e => stopPropagation(e)} className="modal-dialog">
 					<div className="modal-content">
 						<div className="modal-header">

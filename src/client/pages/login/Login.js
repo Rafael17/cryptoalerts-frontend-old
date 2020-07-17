@@ -97,15 +97,13 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
-                {this.state.isModalOpen ?
-                    <AlertModal
-                        title="Account Created"
-                        hideModal={this.hideModal}
-                    >
-                        Please login to your newly created account
+                <AlertModal
+                    isOpen={this.state.isModalOpen}
+                    title="Account Created"
+                    hideModal={this.hideModal}
+                >
+                    Please login to your newly created account
                     </AlertModal>
-                    : null
-                }
             </div>
         );
     }

@@ -104,7 +104,7 @@ class CreateIndicatorAlert extends Component {
 	}
 
 	renderModalBody = () => {
-		return (<p>Please set up telegram notifications by sending the following passcode
+		return (<p>To send/receive alerts we use Telegram. Please set up Telegram notifications by sending the following passcode
 			<span className="highlight"> {this.props.userData.telegramPasscode}</span> to <span className="highlight">{this.props.botName} </span>
 		to receive alerts right on your phone</p>)
 	}
@@ -131,13 +131,9 @@ class CreateIndicatorAlert extends Component {
 
 		return (
 			<div className={"create-price-box "}>
-				{
-					this.state.isAlertModalOpen ?
-						<AlertModal title={this.state.errorTitle} hideModal={() => this.setState({ isAlertModalOpen: false })}>
-							{this.state.errorMessage}
-						</AlertModal>
-						: null
-				}
+				<AlertModal isOpen={this.state.isAlertModalOpen} title={this.state.errorTitle} hideModal={() => this.setState({ isAlertModalOpen: false })}>
+					{this.state.errorMessage}
+				</AlertModal>
 				<form autoComplete="off" onSubmit={this.handleSubmit}>
 					<div className="form-group row margin-zero">
 						<label className="col-sm-3 col-form-label col-form-label-sm">Trading Pair</label>

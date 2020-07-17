@@ -97,32 +97,24 @@ class PriceAlerts extends Component {
 					handleDeleteAlert={this.handleDeleteIndicatorAlert}
 					openModal={() => this.setState({ isIndicatorModalOpen: true })}>
 				</AlertsTable>
-				{
-					this.state.isPriceModalOpen ?
-						<Modal hideFooter={true} title="Create a new Price Alert" hideModal={() => this.setState({ isPriceModalOpen: false })}>
-							<CreateAlertForm
-								updateAlerts={this.updateAlerts}
-								handleCancelCreateAlert={() => this.setState({ isPriceModalOpen: false })}
-								pairs={this.state.pairs}
-								userData={this.state.userData}
-								botName={this.state.botName}
-							/>
-						</Modal>
-						: null
-				}
-				{
-					this.state.isIndicatorModalOpen ?
-						<Modal hideFooter={true} title="Create a new Indicator Alert" hideModal={() => this.setState({ isIndicatorModalOpen: false })}>
-							<CreateIndicatorAlertForm
-								updateAlerts={this.updateAlerts}
-								handleCancelCreateAlert={() => this.setState({ isIndicatorModalOpen: false })}
-								pairs={this.state.pairs}
-								userData={this.state.userData}
-								botName={this.state.botName}
-							/>
-						</Modal>
-						: null
-				}
+				<Modal isOpen={this.state.isPriceModalOpen} hideFooter={true} title="Create a new Price Alert" hideModal={() => this.setState({ isPriceModalOpen: false })}>
+					<CreateAlertForm
+						updateAlerts={this.updateAlerts}
+						handleCancelCreateAlert={() => this.setState({ isPriceModalOpen: false })}
+						pairs={this.state.pairs}
+						userData={this.state.userData}
+						botName={this.state.botName}
+					/>
+				</Modal>
+				<Modal isOpen={this.state.isIndicatorModalOpen} hideFooter={true} title="Create a new Indicator Alert" hideModal={() => this.setState({ isIndicatorModalOpen: false })}>
+					<CreateIndicatorAlertForm
+						updateAlerts={this.updateAlerts}
+						handleCancelCreateAlert={() => this.setState({ isIndicatorModalOpen: false })}
+						pairs={this.state.pairs}
+						userData={this.state.userData}
+						botName={this.state.botName}
+					/>
+				</Modal>
 			</React.Fragment>
 		)
 	}
