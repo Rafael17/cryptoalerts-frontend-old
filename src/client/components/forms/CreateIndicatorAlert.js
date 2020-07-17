@@ -8,17 +8,12 @@ class CreateIndicatorAlert extends Component {
 	state = {
 		exchangePair: "",
 		indicator: "",
-		timeframe_1: false,
-		timeframe_5: false,
-		timeframe_15: false,
-		timeframe_60: false,
-		timeframe_240: false,
 		timeframe: [
-			{ label: '1 minutes', value: '1' },
-			{ label: '5 minutes', value: '5' },
-			{ label: '15 minutes', value: '15' },
-			{ label: '1 hour', value: '60' },
-			{ label: '4 hours', value: '240' },
+			{ label: '1 minutes', value: '1', isChecked: false },
+			{ label: '5 minutes', value: '5', isChecked: false },
+			{ label: '15 minutes', value: '15', isChecked: false },
+			{ label: '1 hour', value: '60', isChecked: false },
+			{ label: '4 hours', value: '240', isChecked: false },
 		],
 		exchangePairSelect: [
 			{ label: "Binance - ETHUSDT", value: "Binance - ETHUSDT" },
@@ -84,10 +79,6 @@ class CreateIndicatorAlert extends Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault();
-		const body = this.renderModalBody()
-		//this.props.showModalError({ modal: { title: "Telegram has not been linked!", body: body } });
-		this.setState({ isAlertModalOpen: true })
-		return;
 
 		// check if user has set up telegram before continuing
 		const { telegramChatId, _id } = this.props.userData;
@@ -100,8 +91,7 @@ class CreateIndicatorAlert extends Component {
 				.then(response => response.json())
 				.then(result => {
 					if (result.error) {
-						const body = this.renderModalBody()
-						this.props.showModalError({ modal: { title: "Telegram has not been linked!", body: body } });
+						this.setState({ isAlertModalOpen: true })
 					} else {
 						this.submitForm();
 					}

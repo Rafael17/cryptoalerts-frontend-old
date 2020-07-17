@@ -4,8 +4,7 @@ import WithPage from './../../components/withPage';
 import Modal from './../../components/modal';
 import CreateAlertForm from './../../components/forms/CreateAlert';
 import CreateIndicatorAlertForm from './../../components/forms/CreateIndicatorAlert';
-import AddSVG from './../../svgs/addSVG.js';
-import DeleteSVG from './../../svgs/deleteSVG.js';
+import AlertsTable from './AlertsTable';
 
 class PriceAlerts extends Component {
 
@@ -71,90 +70,45 @@ class PriceAlerts extends Component {
 		this.setState({ showModal: true })
 	}
 
+	openModal = () => this.setState({ isPriceModalOpen: true })
+
 	render() {
-		const thead = ['Exchange', 'Trading Pair', 'Price', 'Cross Type', 'Message', ''];
 
-		const theadHTML = thead.map((title, index) => <td key={index}>{title}</td>)
-		const hideOverlay = (this.state.hideCreatePrice && this.state.hideCreateIndicator ? " hide" : "");
-		const priceAlertsHTML = this.state.priceAlerts.map((e, i) => {
-			return (
-				<tr key={i}>
-					<td>{e.exchange}</td>
-					<td>{e.pair}</td>
-					<td>{e.price}</td>
-					<td>{e.cross}</td>
-					<td>{e.message}</td>
-					<td style={{ width: '25px' }}>
-						<div data-id={e._id} className="button-svg-wrapper" onClick={this.handleDeletePriceAlert}>
-							<DeleteSVG />
-						</div>
-					</td>
-				</tr>
-			)
-		}
-		);
+		const priceProperties = [
+			{ label: 'Exchange', property: 'exchange' },
+			{ label: 'Trading Pair', property: 'pair' },
+			{ label: 'Price', property: 'price' },
+			{ label: 'Cross Type', property: 'cross' },
+			{ label: 'Message', property: 'message' },
+		];
 
-		const theadIndicator = ['Exchange', 'Trading Pair', 'Indicator', '1 min', '5 min', '15 min', '1 hour', '4 hour', ''];
-		const theadIndicatorAlertsHTML = theadIndicator.map((title, index) => <td key={index}>{title}</td>)
-		const checkbox = (checked) => {
-
-			return (checked ? <input disabled="disabled" type="checkbox" checked /> : <input disabled="disabled" type="checkbox" />)
-		};
-		const indicatorAlertsHTML = this.state.indicatorAlerts.map((e, i) => {
-			return (
-				<tr key={i}>
-					<td>{e.exchange}</td>
-					<td>{e.pair}</td>
-					<td>{e.indicator}</td>
-					<td>{checkbox(e.timeframe_1)}</td>
-					<td>{checkbox(e.timeframe_5)}</td>
-					<td>{checkbox(e.timeframe_15)}</td>
-					<td>{checkbox(e.timeframe_60)}</td>
-					<td>{checkbox(e.timeframe_240)}</td>
-					<td style={{ width: '25px' }}>
-						<div data-id={e._id} className="button-svg-wrapper" onClick={this.handleDeleteIndicatorAlert}>
-							<DeleteSVG />
-						</div>
-					</td>
-				</tr>
-			)
-		}
-		);
+		const indicatorProperties = [
+			{ label: 'Exchange', property: 'exchange' },
+			{ label: 'Trading Pair', property: 'pair' },
+			{ label: 'Indicator', property: 'indicator' },
+			{ label: '1 min', property: 'timeframe_1', isCheckbox: true },
+			{ label: '5 min', property: 'timeframe_5', isCheckbox: true },
+			{ label: '15 min', property: 'timeframe_15', isCheckbox: true },
+			{ label: '1 hour', property: 'timeframe_60', isCheckbox: true },
+			{ label: '4 hour', property: 'timeframe_240', isCheckbox: true },
+		];
 
 		return (
 			<WithPage page="alerts">
-				<div className="alerts-table-container">
-					<h2>Price Alerts</h2>
-					<table className="table table-bordered table-striped">
-						<thead className="thead-dark">
-							<tr>
-								{theadHTML}
-							</tr>
-						</thead>
-						<tbody>
-							{priceAlertsHTML}
-						</tbody>
-					</table>
-					<div className="button-svg-wrapper" onClick={() => this.setState({ isPriceModalOpen: true })}>
-						<AddSVG />
-					</div>
-				</div>
-				<div className="alerts-table-container">
-					<h2>Indicator Alerts</h2>
-					<table className="table table-bordered table-striped">
-						<thead className="thead-dark">
-							<tr>
-								{theadIndicatorAlertsHTML}
-							</tr>
-						</thead>
-						<tbody>
-							{indicatorAlertsHTML}
-						</tbody>
-					</table>
-					<div className="button-svg-wrapper" onClick={() => this.setState({ isIndicatorModalOpen: true })}>
-						<AddSVG />
-					</div>
-				</div>
+				<AlertsTable
+					list={priceProperties}
+					title="Price Alerts"
+					alerts={this.state.priceAlerts}
+					handleDeleteAlert={this.handleDeletePriceAlert}
+					openModal={() => this.setState({ isPriceModalOpen: true })}>
+				</AlertsTable>
+				<AlertsTable
+					list={indicatorProperties}
+					title="Indicator Alerts"
+					alerts={this.state.indicatorAlerts}
+					handleDeleteAlert={this.handleDeleteIndicatorAlert}
+					openModal={() => this.setState({ isIndicatorModalOpen: true })}>
+				</AlertsTable>
 				{
 					this.state.isPriceModalOpen ?
 						<Modal hideFooter={true} title="Create a new Price Alert" hideModal={() => this.setState({ isPriceModalOpen: false })}>

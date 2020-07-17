@@ -100,12 +100,14 @@ class Login extends Component {
                     </div>
                 </div>
                 <div className={"overlay" + (this.state.showModal ? "" : "hide")}></div>
-                <Modal
-                    title={this.state.modal.title}
-                    body={this.state.modal.body}
-                    show={this.state.showModal}
-                    hideModal={this.hideModal}
-                />
+                {this.state.showModal ?
+                    <Modal
+                        title={this.state.modal.title}
+                        children={this.state.modal.children}
+                        hideModal={this.hideModal}
+                    />
+                    : null
+                }
             </div>
         );
     }
